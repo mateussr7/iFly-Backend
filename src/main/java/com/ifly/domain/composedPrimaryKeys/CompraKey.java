@@ -7,10 +7,6 @@ import java.io.Serializable;
 
 @EqualsAndHashCode
 public class CompraKey implements Serializable {
-    @Column(
-            name = "passageiro_pkey",
-            columnDefinition = "id"
-    )
     protected Long idPassageiro;
     protected Long idVoo;
 
