@@ -2,11 +2,13 @@ package com.ifly.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 
+@NoArgsConstructor
 @Entity(name = "passageiro")
 @PrimaryKeyJoinColumn(name = "id")
 @Data

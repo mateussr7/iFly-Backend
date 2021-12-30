@@ -1,12 +1,14 @@
 package com.ifly.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 import static javax.persistence.InheritanceType.JOINED;
 
+@NoArgsConstructor
 @Entity(name = "usuario")
 @Inheritance(strategy = JOINED)
 @Data
@@ -50,7 +52,5 @@ public abstract class Usuario extends GenericEntity{
         this.login = login;
         this.senha = senha;
     }
-
-      public Usuario() {}
 
 }

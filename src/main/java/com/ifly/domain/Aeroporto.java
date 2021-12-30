@@ -1,12 +1,14 @@
 package com.ifly.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
+@NoArgsConstructor
 @Entity(name = "aeroporto")
 @Data
 public class Aeroporto extends GenericEntity{
@@ -25,20 +27,17 @@ public class Aeroporto extends GenericEntity{
             updatable = false
     )
     private Long id;
-
     @Column(
             name = "nome",
             columnDefinition = "varchar(255)"
     )
     private String nome;
-
     @Column(
             name = "codigo",
             columnDefinition = "varchar(10)",
             nullable = false
     )
     private String codigo;
-
     @Column(
             name = "geom",
             columnDefinition = "geometry"

@@ -2,9 +2,11 @@ package com.ifly.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Entity(name = "empresa_aerea")
 @PrimaryKeyJoinColumn(name = "id")
 @Data
