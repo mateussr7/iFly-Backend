@@ -8,6 +8,8 @@ import java.sql.SQLException;
 
 public class AirlineRepository extends BaseRepository{
 
+    private AdministratorRepository administratorRepository = new AdministratorRepository();
+
     public EmpresaAerea getEmpresaById(Long id){
         String sql = "SELECT * FROM usuario u INNER JOIN empresa_aerea ea ON ea.id = u.id WHERE ea.id = ?";
         EmpresaAerea empresaAerea = new EmpresaAerea();
@@ -20,6 +22,7 @@ public class AirlineRepository extends BaseRepository{
                 empresaAerea.setLogin(set.getString("login"));
                 empresaAerea.setNome(set.getString("nome"));
                 empresaAerea.setCnpj(set.getString("cnpj"));
+                empresaAerea.setAdministrador(administratorRepository.getAdministradorById(set.getLong("id_administrador")));
             }
         }catch (SQLException e){
             e.printStackTrace();
