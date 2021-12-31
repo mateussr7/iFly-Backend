@@ -13,11 +13,11 @@ import java.util.List;
 public class VooController {
     VooServices vooServices = new VooServices();
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<VooDTO>> getVoos(@RequestParam String origin,
                                                 @RequestParam String destiny,
-                                                @RequestParam Timestamp date){
-        return ResponseEntity.ok(vooServices.getVoos(origin, destiny, date));
+                                                @RequestParam String date){
+        return ResponseEntity.ok(vooServices.getVoos(origin, destiny, Timestamp.valueOf(date.concat(" 00:00:00"))));
     }
 
 }

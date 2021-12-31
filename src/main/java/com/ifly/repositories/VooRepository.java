@@ -1,5 +1,6 @@
 package com.ifly.repositories;
 
+import com.ifly.domain.EmpresaAerea;
 import com.ifly.domain.Usuario;
 import com.ifly.domain.Voo;
 
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class VooRepository extends BaseRepository{
+    AirlineRepository airlineRepository = new AirlineRepository();
 
     public ArrayList<Voo> getVooByOriginAndDestinyAndDate(String origin, String destiny, Timestamp date){
         ArrayList<Voo> voos = new ArrayList<>();
@@ -32,25 +34,24 @@ public class VooRepository extends BaseRepository{
                 PreparedStatement stm = connection.prepareStatement(sql);
                 stm.setString(1, origin);
                 stm.setString(2, destiny);
-                stm.setString(3, date.toString());
+                stm.setTimestamp(3, date);
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);// w ww.  j ava  2  s  .co m
                 cal.add(Calendar.DATE, 1); //minus number would decrement the days
                 Timestamp dayAfterDate = new Timestamp(cal.getTime().getTime());
-                stm.setString(3, dayAfterDate.toString());
+                stm.setTimestamp(4, dayAfterDate);
 
                 ResultSet set = stm.executeQuery();
-                System.out.println('a');
                 while(set.next()){
                     Voo voo = new Voo();
                     voo.setId(set.getLong("id"));
-                    //EmpresaAerea empresaAerea = empresaAereaRepository.getById(set.getLong("id_empresa_aerea"));
-                    //voo.setEmpresaAerea(empresaAerea);
+                    EmpresaAerea empresaAerea = airlineRepository.getEmpresaById(set.getLong("id_empresa_aerea"));
+                    voo.setEmpresaAerea(empresaAerea);
                     //Rota rota = rotaRepository.getById(set.getLong("id_rota"));
                     //voo.setRota(rota);
                     voo.setCapacidade(set.getInt("capacidade"));
                     voo.setValor(set.getFloat("valor"));
-
+                    voo.setHorario(set.getTimestamp("horario"));
                     voos.add(voo);
                 }
             }else{

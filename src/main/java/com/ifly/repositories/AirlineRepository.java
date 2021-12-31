@@ -22,13 +22,14 @@ public class AirlineRepository extends BaseRepository{
                 empresaAerea.setLogin(set.getString("login"));
                 empresaAerea.setNome(set.getString("nome"));
                 empresaAerea.setCnpj(set.getString("cnpj"));
+                empresaAerea.setSenha(set.getString("senha"));
                 empresaAerea.setAdministrador(administratorRepository.getAdministradorById(set.getLong("id_administrador")));
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
 
-        return null;
+        return empresaAerea;
     }
 
 }
