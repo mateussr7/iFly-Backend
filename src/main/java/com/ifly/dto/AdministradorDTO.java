@@ -4,6 +4,8 @@ import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifly.domain.Administrador;
+import com.ifly.domain.Usuario;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,6 +21,11 @@ public class AdministradorDTO extends UsuarioDTO{
     public AdministradorDTO(Administrador entity){
         super(entity);
         this.cpf = entity.getCpf();
+    }
+
+    public AdministradorDTO(Usuario entity, String cpf) {
+        super(entity);
+        this.cpf = cpf;
     }
 
     public Administrador toEntity(){

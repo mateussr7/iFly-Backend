@@ -25,5 +25,5 @@ public class Passageiro extends Usuario{
             name = "quilometragem_voada",
             columnDefinition = "double precision"
     )
-    private Float quilometragemVoada;
+    private Double quilometragemVoada;
 }

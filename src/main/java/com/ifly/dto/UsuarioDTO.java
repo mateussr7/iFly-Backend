@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public abstract class UsuarioDTO {
+public class UsuarioDTO {
     private Long id;
     private String nome;
     private String login;

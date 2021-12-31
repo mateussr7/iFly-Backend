@@ -4,6 +4,7 @@ import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifly.domain.EmpresaAerea;
+import com.ifly.domain.Usuario;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -21,6 +22,12 @@ public class EmpresaAereaDTO extends UsuarioDTO {
         super(entity);
         this.cnpj = entity.getCnpj();
         this.idAdministrador = entity.getAdministrador().getId();
+    }
+
+    public EmpresaAereaDTO(Usuario entity, String cnpj, Long idAdministrador) {
+        super(entity);
+        this.cnpj = cnpj;
+        this.idAdministrador = idAdministrador;
     }
 
     public EmpresaAerea toEntity(){

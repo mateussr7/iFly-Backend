@@ -4,6 +4,8 @@ import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifly.domain.Passageiro;
+import com.ifly.domain.Usuario;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,13 +17,21 @@ import java.util.List;
 @Data
 public class PassageiroDTO extends UsuarioDTO{
     private String cpf;
-    private Float quilometragemVoada;
+    private Double quilometragemVoada;
+
 
     public PassageiroDTO(Passageiro entity){
         super(entity);
         this.cpf = entity.getCpf();
         this.quilometragemVoada = entity.getQuilometragemVoada();
     }
+
+    public PassageiroDTO(Usuario entity, String cpf, Double quilometragemVoada) {
+        super(entity);
+        this.cpf = cpf;
+        this.quilometragemVoada = quilometragemVoada;
+    }
+
     public Passageiro toEntity(){
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(this, Passageiro.class);

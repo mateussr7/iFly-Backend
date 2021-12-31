@@ -12,7 +12,7 @@ import static javax.persistence.InheritanceType.JOINED;
 @Entity(name = "usuario")
 @Inheritance(strategy = JOINED)
 @Data
-public abstract class Usuario extends GenericEntity{
+public class Usuario extends GenericEntity{
     @Id
     @SequenceGenerator(
             name = "usuario_seq",

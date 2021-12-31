@@ -1,5 +1,6 @@
 package com.ifly;
 
+import com.ifly.repositories.BaseRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
