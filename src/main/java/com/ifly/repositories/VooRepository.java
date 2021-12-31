@@ -1,6 +1,7 @@
 package com.ifly.repositories;
 
 import com.ifly.domain.EmpresaAerea;
+import com.ifly.domain.Rota;
 import com.ifly.domain.Usuario;
 import com.ifly.domain.Voo;
 
@@ -14,6 +15,7 @@ import java.util.Calendar;
 
 public class VooRepository extends BaseRepository{
     AirlineRepository airlineRepository = new AirlineRepository();
+    RotaRepository rotaRepository = new RotaRepository();
 
     public ArrayList<Voo> getVooByOriginAndDestinyAndDate(String origin, String destiny, Timestamp date){
         ArrayList<Voo> voos = new ArrayList<>();
@@ -47,8 +49,8 @@ public class VooRepository extends BaseRepository{
                     voo.setId(set.getLong("id"));
                     EmpresaAerea empresaAerea = airlineRepository.getEmpresaById(set.getLong("id_empresa_aerea"));
                     voo.setEmpresaAerea(empresaAerea);
-                    //Rota rota = rotaRepository.getById(set.getLong("id_rota"));
-                    //voo.setRota(rota);
+                    Rota rota = rotaRepository.getRotaById(set.getLong("id_rota"));
+                    voo.setRota(rota);
                     voo.setCapacidade(set.getInt("capacidade"));
                     voo.setValor(set.getFloat("valor"));
                     voo.setHorario(set.getTimestamp("horario"));
