@@ -23,19 +23,19 @@ public class UserRepository extends BaseRepository{
                 "         FROM usuario u" +
                 "         LEFT JOIN passageiro p ON p.id = u.id" +
                 "         LEFT JOIN empresa_aerea ea ON ea.id = u.id" +
-                "         LEFT JOIN administrador a ON a.id = u.id" +
-                "WHERE u.login = 'pedro_mendes@iFly.com'";
+                "         LEFT JOIN administrador a ON a.id = u.id " +
+                "WHERE u.login = ?";
         String type = "";
+        PreparedStatement stm = null;
         try {
             if(connection.isValid(3)){
-                PreparedStatement stm = connection.prepareStatement(sql);
-            //    stm.setString(1, credentials.getEmail());
+                stm = connection.prepareStatement(sql);
+                stm.setString(1, credentials.getEmail());
                 ResultSet set = stm.executeQuery();
-                System.out.println('a');
                 while(set.next()){
                     type = set.getString("tipo");
                     Usuario usuario = new Usuario();
-                    usuario.setLogin(set.getString("email"));
+                    usuario.setLogin(set.getString("login"));
                     usuario.setId(set.getLong("idUsuario"));
                     usuario.setSenha(set.getString("senha"));
                     usuario.setNome(set.getString("nome"));
@@ -57,7 +57,7 @@ public class UserRepository extends BaseRepository{
                 openConnection();
             }
         }catch (SQLException e){
-
+            e.printStackTrace();
         }
         return login;
     }
@@ -74,6 +74,17 @@ public class UserRepository extends BaseRepository{
             e.printStackTrace();
         }
         return query;
+    }
+
+
+    public Long getId(){
+        try{
+            PreparedStatement stm = connection.prepareStatement("UPDATE usuario SET nome = 'PEDRO' WHERE id = 41");
+            stm.executeUpdate();
+        }catch (SQLException e){
+            return new Long(0);
+        }
+        return new Long(1);
     }
 
 }
