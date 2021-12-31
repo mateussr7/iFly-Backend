@@ -2,7 +2,8 @@ package com.ifly.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.locationtech.jts.geom.Point;
+import org.wololo.geojson.Point;
+
 
 import javax.persistence.*;
 
