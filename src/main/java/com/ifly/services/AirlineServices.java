@@ -8,6 +8,8 @@ import com.ifly.dto.VooDTO;
 import com.ifly.repositories.AdministratorRepository;
 import com.ifly.repositories.AirlineRepository;
 
+import java.util.List;
+
 public class AirlineServices {
 
     private AirlineRepository airlineRepository = new AirlineRepository();
@@ -39,5 +41,11 @@ public class AirlineServices {
         empresaAereaEntity.setCnpj(empresaAereaDTO.getCnpj());
         empresaAereaEntity = airlineRepository.insertEmpresaAerea(empresaAereaEntity);
         return new EmpresaAereaDTO(empresaAereaEntity);
+    }
+
+    public List<EmpresaAereaDTO> getAllAirlines(){
+        airlineRepository.openConnection();
+        List<EmpresaAerea> airlines = airlineRepository.getAllAirlines();
+        return EmpresaAereaDTO.createDTOList(airlines);
     }
 }

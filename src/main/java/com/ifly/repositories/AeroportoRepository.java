@@ -9,6 +9,8 @@ import org.locationtech.jts.geom.Geometry;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AeroportoRepository extends BaseRepository{
 
@@ -33,12 +35,33 @@ public class AeroportoRepository extends BaseRepository{
         return aeroporto;
     }
 
-    public Geometry convertJsonToPoint(String json){
+    public List<Aeroporto> getAllAirports(){
+        String sql = "SELECT id,nome,codigo,ST_AsGeoJSON(geom) as geom FROM aeroporto LIMIT 10";
+        List<Aeroporto> airports = new ArrayList<>();
+
+        try{
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                Aeroporto aeroporto = new Aeroporto();
+                aeroporto.setCodigo(rs.getString("codigo"));
+                aeroporto.setGeom(convertJsonToPoint(rs.getString("geom")));
+                aeroporto.setId(rs.getLong("id"));
+                aeroporto.setNome(rs.getString("nome"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return airports;
+    }
+
+    private Geometry convertJsonToPoint(String json){
         ObjectMapper mapper = new ObjectMapper();
         try{
-            Geometry geom = mapper.readValue(json, Geometry.class);
-            return geom;
+            return mapper.readValue(json, Geometry.class);
         }catch (JsonProcessingException e){
+            e.printStackTrace();
         }
         return null;
     }

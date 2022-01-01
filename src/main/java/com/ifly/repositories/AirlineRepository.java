@@ -6,6 +6,8 @@ import com.ifly.domain.Voo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AirlineRepository extends BaseRepository{
 
@@ -91,6 +93,30 @@ public class AirlineRepository extends BaseRepository{
         }
         return empresaAerea;
 
+    }
+
+    public List<EmpresaAerea> getAllAirlines(){
+        String sql = "SELECT u.id as idUsuario, * FROM usuario u INNER JOIN empresa_aerea ea ON u.id = ea.id";
+        List<EmpresaAerea> airlines = new ArrayList<>();
+
+        try{
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                EmpresaAerea airline = new EmpresaAerea();
+                airline.setId(rs.getLong("idUsuario"));
+                airline.setNome(rs.getString("nome"));
+                airline.setLogin(rs.getString("login"));
+                airline.setSenha(rs.getString("senha"));
+                airline.setCnpj(rs.getString("cnpj"));
+                airline.setAdministrador(administratorRepository.getAdministradorById(rs.getLong("id_administrador")));
+                airlines.add(airline);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return airlines;
     }
 
 }

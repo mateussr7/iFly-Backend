@@ -5,6 +5,8 @@ import com.ifly.services.AirlineServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/airline")
 public class AirlineController {
@@ -19,5 +21,10 @@ public class AirlineController {
     @PostMapping
     public ResponseEntity<EmpresaAereaDTO> insertEmpresaAerea(@RequestBody EmpresaAereaDTO empresaAereaDTO){
         return ResponseEntity.ok(airlineServices.insertEmpresaAerea(empresaAereaDTO));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<EmpresaAereaDTO>> getAll(){
+        return ResponseEntity.ok(airlineServices.getAllAirlines());
     }
 }
