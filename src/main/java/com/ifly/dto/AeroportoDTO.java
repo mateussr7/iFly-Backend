@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.wololo.geojson.Point;
+import org.wololo.jts2geojson.GeoJSONWriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class AeroportoDTO {
         this.id = entity.getId();
         this.nome = entity.getNome();
         this.codigo = entity.getCodigo();
-        //this.geom = (Point) GeometryHelper.convertJtsGeometryToGeoJson(entity.getPointLocation());
+        this.geom = (Point) new GeoJSONWriter().write(entity.getGeom());
     }
 
     public Aeroporto toEntity(){

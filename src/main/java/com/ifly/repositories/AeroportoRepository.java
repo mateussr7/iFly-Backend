@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifly.domain.Aeroporto;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
+import org.wololo.jts2geojson.GeoJSONReader;
 
 
 import java.sql.PreparedStatement;
@@ -24,7 +26,7 @@ public class AeroportoRepository extends BaseRepository{
                 ResultSet set = stm.executeQuery();
                 while(set.next()){
                     aeroporto.setCodigo(set.getString("codigo"));
-                    aeroporto.setGeom(convertJsonToPoint(set.getString("geom")));
+                    aeroporto.setGeom((Point) convertJsonToPoint(set.getString("geom")));
                     aeroporto.setId(set.getLong("id"));
                     aeroporto.setNome(set.getString("nome"));
                 }
@@ -45,9 +47,10 @@ public class AeroportoRepository extends BaseRepository{
             while(rs.next()){
                 Aeroporto aeroporto = new Aeroporto();
                 aeroporto.setCodigo(rs.getString("codigo"));
-                aeroporto.setGeom(convertJsonToPoint(rs.getString("geom")));
+                aeroporto.setGeom((Point) convertJsonToPoint(rs.getString("geom")));
                 aeroporto.setId(rs.getLong("id"));
                 aeroporto.setNome(rs.getString("nome"));
+                airports.add(aeroporto);
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -57,13 +60,8 @@ public class AeroportoRepository extends BaseRepository{
     }
 
     private Geometry convertJsonToPoint(String json){
-        ObjectMapper mapper = new ObjectMapper();
-        try{
-            return mapper.readValue(json, Geometry.class);
-        }catch (JsonProcessingException e){
-            e.printStackTrace();
-        }
-        return null;
+           return new GeoJSONReader().read(json);
+
     }
 
 }
