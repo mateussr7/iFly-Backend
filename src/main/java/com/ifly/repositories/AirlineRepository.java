@@ -1,6 +1,7 @@
 package com.ifly.repositories;
 
 import com.ifly.domain.EmpresaAerea;
+import com.ifly.domain.Voo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,6 +31,66 @@ public class AirlineRepository extends BaseRepository{
         }
 
         return empresaAerea;
+    }
+
+    public EmpresaAerea updateEmpresaAerea(EmpresaAerea empresaAerea){
+        String sql =
+                "UPDATE usuario u SET" +
+                        "   login = ?," +
+                        "   senha = ?," +
+                        "   nome = ?" +
+                        "   WHERE u.id = ?";
+
+        try {
+            if(connection.isValid(3)){
+                PreparedStatement stm = connection.prepareStatement(sql);
+                stm.setString(1, empresaAerea.getLogin());
+                stm.setString(2, empresaAerea.getSenha());
+                stm.setString(3, empresaAerea.getNome());
+                stm.setLong(4, empresaAerea.getId());
+
+
+                stm.executeUpdate();
+                stm.close();
+            }else{
+                openConnection();
+            }
+        }catch (SQLException e){
+
+        }
+        return empresaAerea;
+    }
+
+    public EmpresaAerea insertEmpresaAerea(EmpresaAerea empresaAerea) {
+        String sqlUser = "INSERT INTO usuario (login, senha, nome) VALUES (?, ?, ?) ";
+        String sqlAirline =
+                "INSERT INTO empresa_aerea (id, id_administrador, cnpj)" +
+                "   VALUES ((select id from usuario where login = ?), ?, ?) ";
+
+        try {
+            if (connection.isValid(3)) {
+                PreparedStatement stmUser = connection.prepareStatement(sqlUser);
+                stmUser.setString(1, empresaAerea.getLogin());
+                stmUser.setString(2, empresaAerea.getSenha());
+                stmUser.setString(3, empresaAerea.getNome());
+
+                PreparedStatement stmAirline = connection.prepareStatement(sqlAirline);
+                stmAirline.setString(1, empresaAerea.getLogin());
+                stmAirline.setLong(2, empresaAerea.getAdministrador().getId());
+                stmAirline.setString(3, empresaAerea.getCnpj());
+
+                stmUser.executeUpdate();
+                stmAirline.executeUpdate();
+                stmUser.close();
+                stmAirline.close();
+            } else {
+                openConnection();
+            }
+        } catch (SQLException e) {
+
+        }
+        return empresaAerea;
+
     }
 
 }
