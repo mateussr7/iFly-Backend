@@ -113,4 +113,56 @@ public class VooRepository extends BaseRepository{
         }
         return voos;
     }
+
+    public Voo updateVoo(Voo voo){
+        String sql =
+                "UPDATE voo v SET" +
+                        "   capacidade = ?," +
+                        "   horario = ?," +
+                        "   valor = ?," +
+                        "   id_rota = ? " +
+                        "   WHERE v.id = ?";
+
+        try {
+            if(connection.isValid(3)){
+                PreparedStatement stm = connection.prepareStatement(sql);
+                stm.setInt(1, voo.getCapacidade());
+                stm.setTimestamp(2, voo.getHorario());
+                stm.setDouble(3, voo.getValor());
+                stm.setLong(4, voo.getRota().getId());
+                stm.setLong(5, voo.getId());
+
+                stm.executeUpdate();
+                stm.close();
+            }else{
+                openConnection();
+            }
+        }catch (SQLException e){
+
+        }
+        return voo;
+    }
+
+    public Voo insertVoo(Voo voo){
+        String sql = "INSERT INTO voo (capacidade, horario, valor, id_rota, id_empresa_aerea) VALUES (?, ?, ?, ?, ?) ";
+
+        try {
+            if(connection.isValid(3)){
+                PreparedStatement stm = connection.prepareStatement(sql);
+                stm.setInt(1, voo.getCapacidade());
+                stm.setTimestamp(2, voo.getHorario());
+                stm.setDouble(3, voo.getValor());
+                stm.setLong(4, voo.getRota().getId());
+                stm.setLong(5, voo.getEmpresaAerea().getId());
+
+                stm.executeUpdate();
+                stm.close();
+            }else{
+                openConnection();
+            }
+        }catch (SQLException e){
+
+        }
+        return voo;
+    }
 }

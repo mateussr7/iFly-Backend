@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,10 +20,22 @@ public class VooController {
                                                                          @RequestParam (defaultValue ="0") int airline,
                                                                          @RequestParam String date){
         Timestamp flightDate = Timestamp.valueOf(date.concat(" 00:00:00"));
+        List<VooDTO> list;
         if(airline != 0)
-            return ResponseEntity.ok(vooServices.getVoosByOriginAndDestinyAirlineAndDate(origin, destiny,airline, flightDate));
+            list = vooServices.getVoosByOriginAndDestinyAirlineAndDate(origin, destiny,airline, flightDate);
         else
-            return ResponseEntity.ok(vooServices.getVoosByOriginAndDestinyAndDate(origin, destiny, flightDate));
+            list = vooServices.getVoosByOriginAndDestinyAndDate(origin, destiny, flightDate);
+        return ResponseEntity.ok(list);
+    }
+
+    @PutMapping
+    public ResponseEntity<VooDTO> updateVoo(@RequestBody VooDTO vooDTO){
+        return ResponseEntity.ok(vooServices.updateVoo(vooDTO));
+    }
+
+    @PostMapping
+    public ResponseEntity<VooDTO> insertVoo(@RequestBody VooDTO vooDTO){
+        return ResponseEntity.ok(vooServices.insertVoo(vooDTO));
     }
 
 }
