@@ -11,9 +11,17 @@ import java.util.List;
 public class VooServices {
     VooRepository vooRepository = new VooRepository();
 
-    public List<VooDTO> getVoos(String origin, String destiny, Timestamp date){
+    public List<VooDTO> getVoosByOriginAndDestinyAndDate(int origin, int destiny, Timestamp date){
         vooRepository.openConnection();
-        List<Voo> listVooEntity =  vooRepository.getVooByOriginAndDestinyAndDate(origin, destiny, date);
+        List<Voo> listVooEntity =  vooRepository.getVoosByOriginAndDestinyAndDate(origin, destiny, date);
         return VooDTO.createDTOList(listVooEntity);
     }
+
+    public List<VooDTO> getVoosByOriginAndDestinyAirlineAndDate(int origin, int destiny,int airline, Timestamp date){
+        vooRepository.openConnection();
+        List<Voo> listVooEntity =  vooRepository.getVoosByOriginAndDestinyAirlineAndDate(origin, destiny,airline, date);
+        return VooDTO.createDTOList(listVooEntity);
+    }
+
+
 }

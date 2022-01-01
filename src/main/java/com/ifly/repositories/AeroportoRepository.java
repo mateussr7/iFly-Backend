@@ -3,7 +3,8 @@ package com.ifly.repositories;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifly.domain.Aeroporto;
-import org.wololo.geojson.Point;
+import org.locationtech.jts.geom.Geometry;
+
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,11 +33,11 @@ public class AeroportoRepository extends BaseRepository{
         return aeroporto;
     }
 
-    public Point convertJsonToPoint(String json){
+    public Geometry convertJsonToPoint(String json){
         ObjectMapper mapper = new ObjectMapper();
         try{
-            Point point = mapper.readValue(json, Point.class);
-            return point;
+            Geometry geom = mapper.readValue(json, Geometry.class);
+            return geom;
         }catch (JsonProcessingException e){
         }
         return null;

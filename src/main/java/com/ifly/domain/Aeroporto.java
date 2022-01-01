@@ -2,7 +2,7 @@ package com.ifly.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.wololo.geojson.Point;
+import org.locationtech.jts.geom.Geometry;
 
 
 import javax.persistence.*;
@@ -43,5 +43,5 @@ public class Aeroporto extends GenericEntity{
             name = "geom",
             columnDefinition = "geometry"
     )
-    private Point geom;
+    private Geometry geom;
 }
