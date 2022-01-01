@@ -38,4 +38,10 @@ public class VooController {
         return ResponseEntity.ok(vooServices.insertVoo(vooDTO));
     }
 
+    @GetMapping("/seats")
+    public ResponseEntity<List<Integer>> getSeatsOccupied(@RequestBody Long idVoo){
+        List<Integer> seats = vooServices.getAllSeatsOccupiedByFlight(idVoo);
+        return ResponseEntity.ok(seats);
+    }
+
 }

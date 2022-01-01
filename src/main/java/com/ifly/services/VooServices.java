@@ -29,6 +29,7 @@ public class VooServices {
         return VooDTO.createDTOList(listVooEntity);
     }
 
+
     public VooDTO updateVoo(VooDTO vooDTO){
         vooRepository.openConnection();
         Voo vooEntity = new Voo();
@@ -44,7 +45,7 @@ public class VooServices {
         return new VooDTO(vooEntity);
     }
 
-    public VooDTO insertVoo(VooDTO vooDTO){
+    public VooDTO insertVoo(VooDTO vooDTO) {
         vooRepository.openConnection();
         Voo vooEntity = new Voo();
         vooEntity.setHorario(vooDTO.getHorario());
@@ -55,8 +56,13 @@ public class VooServices {
         vooEntity.setEmpresaAerea(ea);
         Rota rota = rotaRepository.getRotaById(vooDTO.getIdRota());
         vooEntity.setRota(rota);
-        vooEntity =  vooRepository.insertVoo(vooEntity);
+        vooEntity = vooRepository.insertVoo(vooEntity);
         return new VooDTO(vooEntity);
+    }
+
+    public List<Integer> getAllSeatsOccupiedByFlight(Long idVoo){
+        vooRepository.openConnection();
+        return vooRepository.getAllSeatsOccupied(idVoo);
     }
 
 

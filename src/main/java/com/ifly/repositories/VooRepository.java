@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class VooRepository extends BaseRepository{
     AirlineRepository airlineRepository = new AirlineRepository();
@@ -114,6 +115,7 @@ public class VooRepository extends BaseRepository{
         return voos;
     }
 
+
     public Voo updateVoo(Voo voo){
         String sql =
                 "UPDATE voo v SET" +
@@ -143,11 +145,11 @@ public class VooRepository extends BaseRepository{
         return voo;
     }
 
-    public Voo insertVoo(Voo voo){
+    public Voo insertVoo(Voo voo) {
         String sql = "INSERT INTO voo (capacidade, horario, valor, id_rota, id_empresa_aerea) VALUES (?, ?, ?, ?, ?) ";
 
         try {
-            if(connection.isValid(3)){
+            if (connection.isValid(3)) {
                 PreparedStatement stm = connection.prepareStatement(sql);
                 stm.setInt(1, voo.getCapacidade());
                 stm.setTimestamp(2, voo.getHorario());
@@ -157,12 +159,31 @@ public class VooRepository extends BaseRepository{
 
                 stm.executeUpdate();
                 stm.close();
-            }else{
+            } else {
                 openConnection();
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
 
         }
         return voo;
+
+    }
+
+    public List<Integer> getAllSeatsOccupied(Long idVoo){
+        String sql = "SELECT assento FROM compra WHERE id_voo = ?";
+        List<Integer> occupiedSeats = new ArrayList<>();
+
+        try{
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setLong(1, idVoo);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                occupiedSeats.add(rs.getInt("assento"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return occupiedSeats;
     }
 }

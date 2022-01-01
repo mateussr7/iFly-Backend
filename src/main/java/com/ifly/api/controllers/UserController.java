@@ -1,36 +1,39 @@
 package com.ifly.api.controllers;
 
-import com.ifly.domain.Administrador;
-
 import com.ifly.dto.CredentialsDTO;
 import com.ifly.dto.LoginDTO;
-import com.ifly.dto.UsuarioDTO;
-import com.ifly.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ifly.dto.PassageiroDTO;
+import com.ifly.services.UserServices;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    private UserRepository userRepository = new UserRepository();
+    private UserServices userServices = new UserServices();
 
-    @GetMapping
-    public ResponseEntity<Long> teste(){
-        userRepository.openConnection();
-        return ResponseEntity.ok(userRepository.getId());
-    }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginDTO> loginService(@RequestBody  CredentialsDTO credentials){
-        userRepository.openConnection();
-        LoginDTO login = userRepository.loginService(credentials);
+    public ResponseEntity<LoginDTO> login(@RequestBody  CredentialsDTO credentials) throws IllegalAccessException {
+        LoginDTO login = userServices.login(credentials);
         return login.getUser() != null ? ResponseEntity.ok(login) : ResponseEntity.badRequest().build();
     }
 
+    @PostMapping("/new-passenger")
+    public ResponseEntity<PassageiroDTO> insert(@RequestBody PassageiroDTO dto){
+        PassageiroDTO passageiro = userServices.registerNewPassenger(dto);
+        return passageiro != null ? ResponseEntity.ok(passageiro) : ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/ranking")
+    public ResponseEntity<List<PassageiroDTO>> passengerRanking(){
+        List<PassageiroDTO> passageiros = userServices.getPassengerRanking();
+        return ResponseEntity.ok(passageiros);
+    }
 
 }
