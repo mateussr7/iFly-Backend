@@ -14,7 +14,7 @@ public class CompraController {
     private CompraServices compraServices = new CompraServices();
 
     @GetMapping()
-    public ResponseEntity<List<CompraDTO>> getAllByUser(@RequestBody Long idUser){
+    public ResponseEntity<List<CompraDTO>> getAllByUser(@RequestParam Long idUser){
         return ResponseEntity.ok(compraServices.getAllFlightsPurchasesByUser(idUser));
     }
 
