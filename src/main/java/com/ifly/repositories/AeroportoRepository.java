@@ -38,7 +38,7 @@ public class AeroportoRepository extends BaseRepository{
     }
 
     public List<Aeroporto> getAllAirports(){
-        String sql = "SELECT id,nome,codigo,ST_AsGeoJSON(geom) as geom FROM aeroporto LIMIT 10";
+        String sql = "SELECT id,nome,codigo,ST_AsGeoJSON(geom) as geom FROM aeroporto";
         List<Aeroporto> airports = new ArrayList<>();
 
         try{

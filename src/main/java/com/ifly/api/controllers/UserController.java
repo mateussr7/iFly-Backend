@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
 
     private UserServices userServices = new UserServices();
@@ -23,7 +23,6 @@ public class UserController {
         LoginDTO login = userServices.login(credentials);
         return login.getUser() != null ? ResponseEntity.ok(login) : ResponseEntity.badRequest().build();
     }
-
     @PostMapping("/new-passenger")
     public ResponseEntity<PassageiroDTO> insert(@RequestBody PassageiroDTO dto){
         PassageiroDTO passageiro = userServices.registerNewPassenger(dto);
