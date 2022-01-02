@@ -25,6 +25,9 @@ public class VooController {
             list = vooServices.getVoosByOriginAndDestinyAirlineAndDate(origin, destiny,airline, flightDate);
         else
             list = vooServices.getVoosByOriginAndDestinyAndDate(origin, destiny, flightDate);
+        for(VooDTO voo: list){
+            voo.setTicketsDisponiveis(vooServices.getAllSeatsOccupiedByFlight(voo.getId()).size());
+        }
         return ResponseEntity.ok(list);
     }
 

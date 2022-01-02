@@ -23,6 +23,7 @@ public class VooDTO {
     private Float valor;
     private Long idEmpresaAerea;
     private Long idRota;
+    private int ticketsDisponiveis;
 
     public VooDTO(Voo entity){
         this.id = entity.getId();

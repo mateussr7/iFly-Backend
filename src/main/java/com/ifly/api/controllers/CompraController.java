@@ -13,7 +13,7 @@ public class CompraController {
 
     private CompraServices compraServices = new CompraServices();
 
-    @PostMapping()
+    @GetMapping()
     public ResponseEntity<List<CompraDTO>> getAllByUser(@RequestBody Long idUser){
         return ResponseEntity.ok(compraServices.getAllFlightsPurchasesByUser(idUser));
     }
