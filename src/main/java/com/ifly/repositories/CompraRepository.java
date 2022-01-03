@@ -13,6 +13,8 @@ import java.util.List;
 
 public class CompraRepository extends BaseRepository{
 
+    private VooRepository vooRepository = new VooRepository();
+
     public List<Compra> getAllPurchasesByUser(Long idUser){
         String sql = "SELECT * FROM compra WHERE id_passageiro = ?";
         List<Compra> compras = new ArrayList<>();
@@ -53,6 +55,23 @@ public class CompraRepository extends BaseRepository{
     }
 
     public Compra insertNewPurchase(CompraDTO dto){
+
+        List<Integer> occupiedSeats = vooRepository.getAllSeatsOccupied(dto.getIdVoo());
+        int min = 9999;
+        for(int i = 0; i<occupiedSeats.size(); i++){
+            System.out.println("teste " + !occupiedSeats.contains(occupiedSeats.get(i)+1));
+            if(!occupiedSeats.contains(occupiedSeats.get(i)+1)){
+                if(min > occupiedSeats.get(i)+1)
+                    min = occupiedSeats.get(i)+1;
+                break;
+            }
+        }
+        if(!occupiedSeats.contains(0))
+            min = 0;
+
+        if(min == 9999)
+            throw new IllegalArgumentException();
+
         String sql = "INSERT INTO compra VALUES(?, ?, ?, ?)";
         LocalDateTime dateTime;
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
@@ -63,7 +82,7 @@ public class CompraRepository extends BaseRepository{
             stm.setLong(1, dto.getIdPassageiro());
             stm.setLong(2, dto.getIdVoo());
             stm.setTimestamp(3, timestamp);
-            stm.setInt(4, dto.getAssento());
+            stm.setInt(4, min);
             stm.executeUpdate();
             updateQuilometragemVoada(dto, Boolean.FALSE);
         }catch (SQLException e){
