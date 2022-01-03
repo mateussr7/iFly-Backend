@@ -20,7 +20,7 @@ public class CompraController {
 
     @PostMapping("/delete")
     public ResponseEntity<CompraDTO> cancelPurchase(@RequestBody CompraDTO dto){
-        return ResponseEntity.ok(compraServices.deletePurchase(dto));
+        return dto!=null ? ResponseEntity.ok(compraServices.deletePurchase(dto)): ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/new")

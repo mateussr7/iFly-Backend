@@ -141,7 +141,7 @@ public class VooRepository extends BaseRepository{
                 openConnection();
             }
         }catch (SQLException e){
-
+            return null;
         }
         return voo;
     }

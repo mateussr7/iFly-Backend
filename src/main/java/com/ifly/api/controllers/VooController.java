@@ -35,12 +35,13 @@ public class VooController {
     public ResponseEntity<VooDTO> updateVoo(@RequestBody VooDTO vooDTO){
         VooDTO voo = vooServices.updateVoo(vooDTO);
         voo.setTicketsDisponiveis(vooServices.getAllSeatsOccupiedByFlight(voo.getId()).size());
-        return ResponseEntity.ok(voo);
+        return voo!= null ? ResponseEntity.ok(voo) : ResponseEntity.badRequest().build();
     }
 
     @PostMapping
     public ResponseEntity<VooDTO> insertVoo(@RequestBody VooDTO vooDTO){
-        return ResponseEntity.ok(vooServices.insertVoo(vooDTO));
+        VooDTO result = vooServices.insertVoo(vooDTO);
+        return result!= null ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/seats")
