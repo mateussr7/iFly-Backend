@@ -14,9 +14,8 @@ public class BaseRepository {
     public void openConnection(){
         try{
             connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Conexão com o banco de dados estabelecida com sucesso");
         }catch (SQLException e){
-            System.out.println("Não foi possivel acessar o banco de dados");
+            e.printStackTrace();
         }
     }
 
