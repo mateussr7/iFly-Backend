@@ -1,7 +1,9 @@
 package com.ifly.repositories;
 
 import com.ifly.domain.Compra;
+import com.ifly.domain.Voo;
 import com.ifly.dto.CompraDTO;
+import com.ifly.dto.VooDTO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,21 +58,22 @@ public class CompraRepository extends BaseRepository{
     }
 
     public Compra insertNewPurchase(CompraDTO dto){
-
         List<Integer> occupiedSeats = vooRepository.getAllSeatsOccupied(dto.getIdVoo());
-        int min = 9999;
-        for(int i = 0; i<occupiedSeats.size(); i++){
-            System.out.println("teste " + !occupiedSeats.contains(occupiedSeats.get(i)+1));
-            if(!occupiedSeats.contains(occupiedSeats.get(i)+1)){
-                if(min > occupiedSeats.get(i)+1)
-                    min = occupiedSeats.get(i)+1;
+        Voo voo =  vooRepository.getVooById(dto.getIdVoo());
+        int capacidade = voo.getCapacidade();
+        int min = capacidade+1;
+
+        for(int i = 0; i<=occupiedSeats.size(); i++){
+            if(!occupiedSeats.contains(i+1)){
+                if(min > i+1)
+                    min = i+1;
                 break;
             }
         }
-        if(!occupiedSeats.contains(0))
-            min = 0;
+        if(!occupiedSeats.contains(1))
+            min = 1;
 
-        if(min == 9999)
+        if(min == capacidade+1)
             throw new IllegalArgumentException();
 
         String sql = "INSERT INTO compra VALUES(?, ?, ?, ?)";

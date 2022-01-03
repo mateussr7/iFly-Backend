@@ -211,4 +211,27 @@ public class VooRepository extends BaseRepository{
         }
         return voos;
     }
+
+    public Voo getVooById(Long vooId){
+        String sql = "SELECT * FROM voo WHERE id=?";
+        Voo voo = new Voo();
+        try{
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setLong(1, vooId);
+            ResultSet set = stm.executeQuery();
+            while(set.next()) {
+                voo.setId(set.getLong("id"));
+                EmpresaAerea empresaAerea = airlineRepository.getEmpresaById(set.getLong("id_empresa_aerea"));
+                voo.setEmpresaAerea(empresaAerea);
+                Rota rota = rotaRepository.getRotaById(set.getLong("id_rota"));
+                voo.setRota(rota);
+                voo.setCapacidade(set.getInt("capacidade"));
+                voo.setValor(set.getFloat("valor"));
+                voo.setHorario(set.getTimestamp("horario"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return voo;
+    }
 }
