@@ -55,19 +55,20 @@ public class CompraRepository extends BaseRepository{
         String sql = "INSERT INTO compra VALUES(?, ?, ?, ?)";
         LocalDateTime dateTime;
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-        Compra compra = dto.toEntity();
-        compra.setData(timestamp);
+        Compra compra = null;
         try{
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setLong(1, dto.getIdPassageiro());
             stm.setLong(2, dto.getIdVoo());
             stm.setTimestamp(3, timestamp);
             stm.setInt(4, dto.getAssento());
+            compra = dto.toEntity();
+            compra.setData(timestamp);
             stm.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
+            return null;
         }
-
         return compra;
     }
 
