@@ -47,6 +47,7 @@ public class CompraRepository extends BaseRepository{
             updateQuilometragemVoada(dto, Boolean.TRUE);
         }catch (SQLException e){
             e.printStackTrace();
+            return null;
         }
 
         return dto;
