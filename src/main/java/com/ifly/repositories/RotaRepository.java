@@ -3,6 +3,7 @@ package com.ifly.repositories;
 import com.ifly.domain.Rota;
 import com.ifly.domain.Usuario;
 import com.ifly.dto.*;
+import com.ifly.utils.OrigDestRota;
 
 import javax.xml.transform.Result;
 import java.io.*;
@@ -83,6 +84,25 @@ public class RotaRepository extends BaseRepository{
 
         }
         return idRota;
+    }
+
+    public OrigDestRota getOrigDestByRotaId(Long id){
+        OrigDestRota origDestRota = new OrigDestRota();
+        String sql = "SELECT O.codigo as orig, D.codigo as dest 	FROM aeroporto O, aeroporto D " +
+                     "WHERE (O.id, D.id) IN (SELECT R.id_aeroporto_partida, R.id_aeroporto_chegada " +
+                     "FROM rota R WHERE R.id = ?)";
+        try{
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setLong(1, id);
+            ResultSet set = stm.executeQuery();
+            while(set.next()){
+                origDestRota.setAeroportoOrig(set.getString("orig"));
+                origDestRota.setAeroportoDest(set.getString("dest"));
+            }
+        }catch (SQLException e){
+
+        }
+        return  origDestRota;
     }
 
 }
