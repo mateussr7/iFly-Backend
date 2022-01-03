@@ -49,4 +49,13 @@ public class VooController {
         return ResponseEntity.ok(seats);
     }
 
+    @GetMapping("/getVoosByUserId")
+    public ResponseEntity<List<VooDTO>> getVoosByUserId(@RequestParam Long userId){
+        List<VooDTO> voos = vooServices.getVoosByUserId(userId);
+        for(VooDTO voo: voos){
+            voo.setTicketsDisponiveis(vooServices.getAllSeatsOccupiedByFlight(voo.getId()).size());
+        }
+        return ResponseEntity.ok(voos);
+    }
+
 }

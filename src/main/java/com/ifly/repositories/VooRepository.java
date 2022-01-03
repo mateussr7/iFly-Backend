@@ -4,6 +4,7 @@ import com.ifly.domain.EmpresaAerea;
 import com.ifly.domain.Rota;
 import com.ifly.domain.Usuario;
 import com.ifly.domain.Voo;
+import com.ifly.dto.VooDTO;
 
 import java.io.*;
 import java.sql.PreparedStatement;
@@ -185,5 +186,29 @@ public class VooRepository extends BaseRepository{
         }
 
         return occupiedSeats;
+    }
+
+    public List<VooDTO> getVoosByUserId(Long userId){
+        String sql = "SELECT V.* FROM voo V, compra C WHERE C.id_passageiro = ? AND C.id_voo = V.id";
+        List<VooDTO> voos = new ArrayList<>();
+
+        try{
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setLong(1, userId);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                VooDTO temp = new VooDTO();
+                temp.setId(rs.getLong("id"));
+                temp.setIdEmpresaAerea(rs.getLong("id_empresa_aerea"));
+                temp.setIdRota(rs.getLong("id_rota"));
+                temp.setCapacidade(rs.getInt("capacidade"));
+                temp.setHorario(rs.getTimestamp("horario"));
+                temp.setValor(rs.getFloat("valor"));
+                voos.add(temp);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return voos;
     }
 }

@@ -7,6 +7,7 @@ import com.ifly.dto.VooDTO;
 import com.ifly.repositories.AirlineRepository;
 import com.ifly.repositories.RotaRepository;
 import com.ifly.repositories.VooRepository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Timestamp;
 
@@ -65,5 +66,9 @@ public class VooServices {
         return vooRepository.getAllSeatsOccupied(idVoo);
     }
 
+    public List<VooDTO> getVoosByUserId(Long userId){
+        vooRepository.openConnection();
+        return vooRepository.getVoosByUserId(userId);
+    }
 
 }
