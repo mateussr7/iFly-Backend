@@ -33,7 +33,9 @@ public class VooController {
 
     @PutMapping
     public ResponseEntity<VooDTO> updateVoo(@RequestBody VooDTO vooDTO){
-        return ResponseEntity.ok(vooServices.updateVoo(vooDTO));
+        VooDTO voo = vooServices.updateVoo(vooDTO);
+        voo.setTicketsDisponiveis(vooServices.getAllSeatsOccupiedByFlight(voo.getId()).size());
+        return ResponseEntity.ok(voo);
     }
 
     @PostMapping

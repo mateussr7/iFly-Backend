@@ -63,6 +63,7 @@ public class CompraRepository extends BaseRepository{
             stm.setLong(2, dto.getIdVoo());
             stm.setTimestamp(3, timestamp);
             stm.setInt(4, dto.getAssento());
+            stm.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
         }
