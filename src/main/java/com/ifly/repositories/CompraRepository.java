@@ -44,6 +44,7 @@ public class CompraRepository extends BaseRepository{
             stm.setLong(2, dto.getIdVoo());
             stm.setInt(3, dto.getAssento());
             stm.executeUpdate();
+            updateQuilometragemVoada(dto, Boolean.TRUE);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -65,6 +66,7 @@ public class CompraRepository extends BaseRepository{
             compra = dto.toEntity();
             compra.setData(timestamp);
             stm.executeUpdate();
+            updateQuilometragemVoada(dto, Boolean.FALSE);
         }catch (SQLException e){
             e.printStackTrace();
             return null;
@@ -72,4 +74,35 @@ public class CompraRepository extends BaseRepository{
         return compra;
     }
 
+    private void updateQuilometragemVoada(CompraDTO dto, Boolean cancel){
+        String sql;
+        if(cancel) {
+            sql = "UPDATE passageiro " +
+                    "SET quilometragem_voada = quilometragem_voada - R.distancia " +
+                    "FROM (SELECT * " +
+                    "     FROM rota " +
+                    "      WHERE rota.id = (SELECT id_rota " +
+                    "                       FROM voo V " +
+                    "                       WHERE V.id=?)) R " +
+                    "WHERE passageiro.id = ?";
+        }else {
+            sql = "UPDATE passageiro " +
+                    "SET quilometragem_voada = quilometragem_voada + R.distancia " +
+                    "FROM (SELECT * " +
+                    "     FROM rota " +
+                    "      WHERE rota.id = (SELECT id_rota " +
+                    "                       FROM voo V " +
+                    "                       WHERE V.id=?)) R " +
+                    "WHERE passageiro.id = ?";
+        }
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setLong(1, dto.getIdVoo());
+            stm.setLong(2, dto.getIdPassageiro());
+            stm.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return;
+    }
 }
